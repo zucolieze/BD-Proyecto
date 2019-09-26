@@ -51,7 +51,7 @@ CREATE TABLE modelos_avion (
 
 CREATE TABLE clases(
 	nombre VARCHAR(32) NOT NULL,
-	porcentaje DECIMAL (2,2) NOT NULL,
+	porcentaje DECIMAL (2,2) UNSIGNED NOT NULL,
   
 	CONSTRAINT pk_clases 
 	PRIMARY KEY (nombre),
@@ -62,7 +62,7 @@ CREATE TABLE clases(
 
 CREATE TABLE comodidades (
 	codigo SMALLINT UNSIGNED NOT NULL,
-	descripcion VARCHAR(500) NOT NULL,
+	descripcion TEXT(500) NOT NULL,
 
 	CONSTRAINT pk_comodidades
 	PRIMARY KEY (codigo)
@@ -116,8 +116,8 @@ CREATE TABLE vuelos_programados(
 CREATE TABLE salidas(
 	vuelo VARCHAR(32) NOT NULL,
 	dia ENUM ('Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa') NOT NULL,
-	hora_sale TIME,
-	hora_llega TIME,
+	hora_sale TIME NOT NULL,
+	hora_llega TIME NOT NULL,
 	modelo_avion VARCHAR(32) NOT NULL,
 	
 	CONSTRAINT pk_salidas_vuelo
@@ -171,7 +171,7 @@ CREATE TABLE brinda (
 	vuelo VARCHAR(32) NOT NULL,
 	dia ENUM ('Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa') NOT NULL,
 	clase VARCHAR(32) NOT NULL, 
-	precio DECIMAL (8,2) NOT NULL,
+	precio DECIMAL (7,2) UNSIGNED NOT NULL,
 	cant_asientos SMALLINT unsigned NOT NULL,
 	
 	CONSTRAINT pk_brinda
