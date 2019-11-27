@@ -275,13 +275,13 @@ public class VuelosWindow extends javax.swing.JInternalFrame{
 	private void llenarCombos() {
 		try {
 			Statement stmt = this.conexionBD.createStatement();
-			String sql = "SELECT * FROM UBICACIONES";
+			String sql = "SELECT * FROM ubicaciones";
 			ResultSet res = stmt.executeQuery(sql);
 			String pais, ciudad, estado, aux;
 			while(res.next()) {
-				pais = res.getString("PAIS");
-				ciudad = res.getString("CIUDAD");
-				estado = res.getString("ESTADO");
+				pais = res.getString("pais");
+				ciudad = res.getString("ciudad");
+				estado = res.getString("estado");
 				aux = pais + " - " + ciudad + " - " + estado;
 				cmbOrigen.addItem(aux);
 				cmbDestino.addItem(aux);
@@ -298,7 +298,7 @@ public class VuelosWindow extends javax.swing.JInternalFrame{
 			conectarBD();
 		try {
 			Statement stmt = this.conexionBD.createStatement();
-			String sql = "SELECT * FROM EMPLEADOS WHERE LEGAJO = " + legajo + " AND PASSWORD = MD5('" + new String(password) + "');";
+			String sql = "SELECT * FROM empleados WHERE legajo = " + legajo + " AND password = MD5('" + new String(password) + "');";
 			ResultSet res = stmt.executeQuery(sql);
 			if(res.next()) 
 				return true;
@@ -373,7 +373,7 @@ public class VuelosWindow extends javax.swing.JInternalFrame{
 				"	duracion AS TIEMPO_ESTIMADO,"
 				+ " Fecha AS FECHA " + 
 				"FROM " + 
-				"	VUELOS_DISPONIBLES " + 
+				"	vuelos_disponibles " + 
 				"WHERE " +
 				" (ASalida_pais = ?) " +
 				" AND (ASalida_ciudad = ?) " +
@@ -459,7 +459,7 @@ public class VuelosWindow extends javax.swing.JInternalFrame{
 			modelo.setRowCount(0);
 			this.tablaInfo.revalidate();
 			PreparedStatement stmt;
-			String sql = "SELECT NOMBRE_CLASE, ASIENTOS_DISPONIBLES, PRECIO FROM VUELOS_DISPONIBLES WHERE NUMERO = ? AND FECHA = ?";
+			String sql = "SELECT NombreClase, asientos_disponibles, Precio FROM vuelos_disponibles WHERE Numero = ? AND Fecha = ?";
 			stmt = this.conexionBD.prepareStatement(sql);
 			stmt.setString(1, codigo);
 			stmt.setDate(2, fecha);
@@ -535,7 +535,7 @@ public class VuelosWindow extends javax.swing.JInternalFrame{
 	
 	private void getClases(String numVuelo, java.sql.Date fechaVuelo, int combo) {
 		PreparedStatement stmt;
-		String sql = "SELECT NOMBRE_CLASE FROM VUELOS_DISPONIBLES WHERE NUMERO = ? AND FECHA = ?";
+		String sql = "SELECT NombreClase FROM vuelos_disponibles WHERE Numero = ? AND Fecha = ?";
 		if(combo == 0)
 			cmbClasesIda.removeAllItems();
 		else
@@ -547,9 +547,9 @@ public class VuelosWindow extends javax.swing.JInternalFrame{
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				if(combo == 0)
-					cmbClasesIda.addItem(rs.getString("NOMBRE_CLASE"));
+					cmbClasesIda.addItem(rs.getString("NombreClase"));
 				else
-					cmbClasesVuelta.addItem(rs.getString("NOMBRE_CLASE"));
+					cmbClasesVuelta.addItem(rs.getString("NombreClase"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -577,7 +577,7 @@ public class VuelosWindow extends javax.swing.JInternalFrame{
 	private String hacerReservaIda(String idaNombre, java.sql.Date idaFecha, String claseEleg, String tipoDoc, String nroDoc, String legajo) {
 		PreparedStatement stmt;
 		String toRet = "";
-		String sql = "CALL RESERVAIDA(?,?,?,?,?,?)";
+		String sql = "CALL reservaVueloIda(?,?,?,?,?,?)";
 		try {
 			int nro = Integer.parseInt(nroDoc);
 			int leg = Integer.parseInt(legajo);
@@ -591,7 +591,7 @@ public class VuelosWindow extends javax.swing.JInternalFrame{
 			System.out.println(stmt.toString());
 			ResultSet res = stmt.executeQuery();
 			while(res.next()) 
-				toRet = res.getString("RESULTADO");
+				toRet = res.getString("Resultado");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -601,7 +601,7 @@ public class VuelosWindow extends javax.swing.JInternalFrame{
 	private String hacerReservaIdaVuelta(String idaNombre, String vueltaNombre, java.sql.Date idaFecha, java.sql.Date vueltaFecha, String claseIda, String claseVuelta, String tipoDoc, String nroDoc, String legajo) {
 		PreparedStatement stmt;
 		String toRet = "";
-		String sql = "CALL RESERVAIDAVUELTA(?,?,?,?,?,?,?,?,?) ";
+		String sql = "CALL reservaVueloIdaVuelta(?,?,?,?,?,?,?,?,?) ";
 		try {		
 			int nro = Integer.parseInt(nroDoc);
 			int leg = Integer.parseInt(legajo);
@@ -618,7 +618,7 @@ public class VuelosWindow extends javax.swing.JInternalFrame{
 			System.out.println(stmt.toString());
 			ResultSet res = stmt.executeQuery();
 			while(res.next()) 
-				toRet = res.getString("RESULTADO");
+				toRet = res.getString("Resultado");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
